@@ -1,66 +1,29 @@
-## Foundry
+# LamboCrowdFunding
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+                    Ohf                              thm       
+                    Ohf                              thm       
+                    !LLbhf                              thkLLi    
+                    <hhhhf                              thhhh~    
+                    ,((qhLf/                          /fLhp((,    
+                    \xLhb{{:                    ,{{dhLx/       
+                        |hhhh1IIIIIIIIIIIIIIIIIIII[qqqq)         
+                    .,,,,thhbbJvvvvxrrrrrrrrrrrrrrrnvvvv[,,,,.    
+                    <hhhhhhkvvvvvvv'               lvvvv0hhhh~    
+                    <hhhhhhkvvvvt<<                 ''xv0hhhh~    
+                (Jv<<<<nhkvvvvtii  1UUUU;   .UUUUf  rv(<<<<uJ|  
+                jj\(]    |hkvvvvtii::nhhhh!   'hhhhY  rv-    ?(\jj
+                cc~      |hkvvvvj[[>i/UUUUi^^^"UUUUxiinv-      <cc
+                    ,:fhkvvvvvvv_~~~~~~~~~~~~~~~[vvvv]^^^^.    
+                    OhhhkvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvI    
+                fwwwwkhhhkvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvxr[  
+                vvZhhhhhhwCCvvvvvvvvvj|(]]]]]]]]]]]]]]]]]]]]]rvj11
+                hhhhhhhhhOvvvvvvvvvvv\[{\\\\[lllllllll(\\\(lltvvvv
+                hhhhhhhhhOvvvvvvvvvvv\[\hhhhclllllllllqhhhwlltvvvvx
+                hhhhhhhhhOvvvvvvvvvvv\[\hhhhclllllllllqhhhwlltvvvv
+                hhhhhhhhhOvvvvvvvvvvv\[}||]-~lllllllll_---_lltvCdd
+                hhhhhhhhhpO0vvvvvvvvvrt/[[_++++llllllllllli))xvLhh
+                hhhhhhhhhhhkUUUUYvvvvvvn))}[[[[>>>>>>>>>~+]UUUUOhh  
+                hhhhhhhhhhhhhhhhwvvvvvvvvv)[[[[[[[[[[[[[tvXhhhhhhh
+                """""""""/hhhhhhhbbbbbbbbbddddddddddddddbbkhh-""""
+                        !11111111111Jhhhhhhhhhhhhhhhhhhhhhhh~    
