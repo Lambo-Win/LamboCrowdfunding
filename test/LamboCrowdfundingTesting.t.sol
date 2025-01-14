@@ -9,21 +9,29 @@ contract LamboCrowdfundingTesting is Test {
     address public owner;
     address public user1;
     address public user2;
-    uint256 public constant TARGET_AMOUNT = 100 ether; // 1000 investments of 0.1 ETH
+    uint256 public constant TARGET_AMOUNT = 100 ether; // 500 investments of 0.2 ETH
 
     function setUp() public {
         owner = makeAddr("owner");
         user1 = makeAddr("user1");
         user2 = makeAddr("user2");
         
+        uint256 startTime = block.timestamp + 1 days;
+        uint256 endTime = block.timestamp + 7 days;
+        
         vm.prank(owner);
         crowdfunding = new LamboCrowdfunding(
             TARGET_AMOUNT,
+            startTime,
+            endTime,
             owner
         );
 
         vm.deal(user1, 1 ether);
         vm.deal(user2, 1 ether);
+        
+        // 将时间设置到 ICO 开始时间
+        vm.warp(startTime);
     }
 
     function test_InitialState() public {
@@ -48,7 +56,7 @@ contract LamboCrowdfundingTesting is Test {
     function test_OnlyWhitelistedCanInvest() public {
         vm.prank(user1);
         vm.expectRevert("Address not whitelisted");
-        (bool success,) = address(crowdfunding).call{value: 0.1 ether}("");
+        (bool success,) = address(crowdfunding).call{value: 0.2 ether}("");
     }
 
     function test_OnlyExactAmountAllowed() public {
@@ -59,8 +67,8 @@ contract LamboCrowdfundingTesting is Test {
         crowdfunding.updateWhitelist(users, true);
 
         vm.prank(user1);
-        vm.expectRevert("Must send exactly 0.1 ETH");
-        (bool success,) = address(crowdfunding).call{value: 0.2 ether}("");
+        vm.expectRevert("Must send exactly 0.2 ETH");
+        (bool success,) = address(crowdfunding).call{value: 0.3 ether}("");
     }
 
     function test_NormalInvestment() public {
@@ -71,16 +79,16 @@ contract LamboCrowdfundingTesting is Test {
         crowdfunding.updateWhitelist(users, true);
 
         vm.prank(user1);
-        (bool success,) = address(crowdfunding).call{value: 0.1 ether}("");
+        (bool success,) = address(crowdfunding).call{value: 0.2 ether}("");
         
         assertTrue(success);
-        assertEq(crowdfunding.raisedAmount(), 0.1 ether);
+        assertEq(crowdfunding.raisedAmount(), 0.2 ether);
     }
 
     function test_ReachTargetAndClose() public {
-        // 创建1000个用户地址
-        address[] memory users = new address[](1000);
-        for(uint i = 0; i < 1000; i++) {
+        // 创建500个用户地址
+        address[] memory users = new address[](500);
+        for(uint i = 0; i < 500; i++) {
             users[i] = makeAddr(string(abi.encodePacked("user", i)));
             vm.deal(users[i], 1 ether);  // 给每个用户1 ETH
         }
@@ -88,9 +96,9 @@ contract LamboCrowdfundingTesting is Test {
         vm.prank(owner);
         crowdfunding.updateWhitelist(users, true);
 
-        for(uint i = 0; i < 1000; i++) {
+        for(uint i = 0; i < 500; i++) {
             vm.prank(users[i]);
-            (bool success,) = address(crowdfunding).call{value: 0.1 ether}("");
+            (bool success,) = address(crowdfunding).call{value: 0.2 ether}("");
             assertTrue(success);
         }
         
@@ -106,12 +114,12 @@ contract LamboCrowdfundingTesting is Test {
         crowdfunding.updateWhitelist(users, true);
 
         vm.prank(user1);
-        (bool success,) = address(crowdfunding).call{value: 0.1 ether}("");
+        (bool success,) = address(crowdfunding).call{value: 0.2 ether}("");
         assertTrue(success);
 
         // 尝试第二次投资
         vm.prank(user1);
         vm.expectRevert("Address not whitelisted");
-        (bool failed,) = address(crowdfunding).call{value: 0.1 ether}("");
+        (bool failed,) = address(crowdfunding).call{value: 0.2 ether}("");
     }
 }

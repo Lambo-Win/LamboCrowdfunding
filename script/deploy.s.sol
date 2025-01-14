@@ -17,11 +17,15 @@ contract DeployContract is Script {
 
         // Testnet, set multiSign as deployer
         LamboCrowdfunding lamboCrowFunding = new LamboCrowdfunding(
-            1 ether,
+            0.6 ether,
+            block.timestamp + 1 minutes,
+            block.timestamp + 2 hours,
             deployerAddress
         );
 
         console2.log("contract address: ", address(lamboCrowFunding));
+        // address lamboCrowFundingAddrss = 0x3Fe36fE2417049CC50Fcc1a475626246C5130452;
+        // payable(lamboCrowFundingAddrss).call{value: 0.1 ether}("");
         
         vm.stopBroadcast();
 

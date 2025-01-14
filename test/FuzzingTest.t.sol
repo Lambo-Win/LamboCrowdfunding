@@ -7,7 +7,7 @@ import "../src/LamboCrowdfunding.sol";
 contract FuzzingTest is Test {
     LamboCrowdfunding public crowdfunding;
     address public owner;
-    uint256 public constant INVESTMENT_AMOUNT = 0.1 ether;
+    uint256 public constant INVESTMENT_AMOUNT = 0.2 ether;
 
     function setUp() public {
         owner = makeAddr("owner");
@@ -31,8 +31,9 @@ contract FuzzingTest is Test {
         vm.prank(owner);
         crowdfunding.updateWhitelist(users, true);
         
-        // 验证白名单状态
+        // 验证初始状态
         assertTrue(crowdfunding.isWhitelisted(user));
+        assertFalse(crowdfunding.hasInvested(user));
 
         // 模拟投资
         vm.prank(user);
@@ -41,7 +42,8 @@ contract FuzzingTest is Test {
 
         // 验证投资后状态
         assertEq(crowdfunding.raisedAmount(), INVESTMENT_AMOUNT);
-        assertFalse(crowdfunding.isWhitelisted(user));
+        assertTrue(crowdfunding.hasInvested(user));
+        assertTrue(crowdfunding.isWhitelisted(user));  // 白名单状态应该保持不变
     }
 
     // 测试批量添加白名单
@@ -66,7 +68,7 @@ contract FuzzingTest is Test {
     // 测试随机金额的投资尝试
     function testFuzz_InvestmentAmount(uint256 amount, address user) public {
         vm.assume(user != address(0) && user != owner);
-        vm.assume(amount != INVESTMENT_AMOUNT && amount > 0);  // 确保金额不是0.1 ETH
+        vm.assume(amount != INVESTMENT_AMOUNT && amount > 0 && amount <= 1000 ether);
         
         // 给用户足够的 ETH
         vm.deal(user, amount);
@@ -77,10 +79,16 @@ contract FuzzingTest is Test {
         vm.prank(owner);
         crowdfunding.updateWhitelist(users, true);
 
+        // 验证初始状态
+        assertFalse(crowdfunding.hasInvested(user));
+
         // 尝试投资错误金额
         vm.prank(user);
         vm.expectRevert("Must send exactly 0.1 ETH");
         (bool success,) = address(crowdfunding).call{value: amount}("");
+
+        // 验证状态没有改变
+        assertFalse(crowdfunding.hasInvested(user));
     }
 
     // 测试目标金额达成后的投资尝试
@@ -129,5 +137,56 @@ contract FuzzingTest is Test {
             vm.expectRevert("Crowdfunding is closed");
             (bool success,) = address(crowdfunding).call{value: INVESTMENT_AMOUNT}("");
         }
+    }
+
+    // 测试重复投资
+    function testFuzz_CannotInvestTwice(address user) public {
+        vm.assume(user != address(0) && user != owner);
+        
+        // 给测试用户足够的 ETH
+        vm.deal(user, 1 ether);
+
+        // 添加用户到白名单
+        address[] memory users = new address[](1);
+        users[0] = user;
+        vm.prank(owner);
+        crowdfunding.updateWhitelist(users, true);
+
+        // 第一次投资
+        vm.prank(user);
+        (bool success,) = address(crowdfunding).call{value: INVESTMENT_AMOUNT}("");
+        assertTrue(success);
+        assertTrue(crowdfunding.hasInvested(user));
+
+        // 尝试第二次投资
+        vm.prank(user);
+        vm.expectRevert("Address has already invested");
+        (bool failed,) = address(crowdfunding).call{value: INVESTMENT_AMOUNT}("");
+    }
+
+    // 测试检查白名单和投资状态
+    function testFuzz_CheckWhitelistAndInvestmentStatus(address user) public {
+        vm.assume(user != address(0) && user != owner);
+        
+        // 初始状态检查
+        assertFalse(crowdfunding.checkWhitelistAndInvestmentStatus(user));
+
+        // 添加到白名单
+        address[] memory users = new address[](1);
+        users[0] = user;
+        vm.prank(owner);
+        crowdfunding.updateWhitelist(users, true);
+
+        // 只有白名单状态检查
+        assertFalse(crowdfunding.checkWhitelistAndInvestmentStatus(user));
+
+        // 投资后状态检查
+        vm.deal(user, INVESTMENT_AMOUNT);
+        vm.prank(user);
+        (bool success,) = address(crowdfunding).call{value: INVESTMENT_AMOUNT}("");
+        assertTrue(success);
+
+        // 验证最终状态
+        assertTrue(crowdfunding.checkWhitelistAndInvestmentStatus(user));
     }
 }
