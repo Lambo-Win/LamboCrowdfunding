@@ -134,4 +134,14 @@ contract LamboCrowdfunding is Ownable {
     function getBalance() public view returns (uint256) {
         return address(this).balance;
     }
+
+    // View the start time
+    function getStartTime() public view returns (uint256) {
+        return startTime;
+    }
+
+    // View the end time
+    function getEndTime() public view returns (uint256) {
+        return endTime;
+    }
 } 

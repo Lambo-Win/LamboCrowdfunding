@@ -25,11 +25,19 @@ contract AddWhiteList is Script {
         // 0xba19367cdbb2262aaa31e3b4e694df3618481e53
         // 0x68e6cce918c80fb9eb7833eb719964ee86afe4c6
         // 0xb8c2be97e78f06e8d7a7c046f8dd4b0f17a6ebcc
-        LamboCrowdfunding lamboCrowFunding = LamboCrowdfunding(payable(0xa4Eb2e4223f70D2c0eE369E950b58Aa272cDa3E7));
-        address[] memory users = new address[](3);
-        users[0] = 0xdCeD556D5Bf59Bf54aa598b0e108fc49907C043B;
-        users[1] = 0x807A16f89BAd7Df384dA4142e5177362670Eb3B8;
-        users[2] = 0xC13311e81622DDeA3282428348e7356c44DeCB3c;
+        LamboCrowdfunding lamboCrowFunding = LamboCrowdfunding(payable(0x7b27bBcfF04EC1C62EBe9206091C51d4c92CA3CC));
+        address[] memory users = new address[](5);
+        users[0] = 0x85BCe97224ceC0884D9ACa9A961c46b084ecb215;
+        users[1] = 0xd8bBAb5ABec2768444ee30920F52F1D3575dDe2c;
+        users[2] = 0xacc79c9a29074AFD0216A2a2C3E080E622BB62ce;
+        users[3] = 0x85fe1d14B95ce466b4450b863723D14DAFB11CDB;
+        users[4] = 0x1A2a9b99293AF505799Caad02362883BC31d1e2A;
+
+        // users[0] = 0xdCeD556D5Bf59Bf54aa598b0e108fc49907C043B;
+        // users[1] = 0x807A16f89BAd7Df384dA4142e5177362670Eb3B8;
+        // users[2] = 0xC13311e81622DDeA3282428348e7356c44DeCB3c;
+        // users[3] = 0x8F75C55Fa603097f72D8801FA3befe0Bd758a89B;
+
         // users[3] = 0x2fC25088a8D93f10DF697664bEeA5C23f721A230;
         // users[4] = 0x6DF71940a2892c9B1B121d98be07A5a7E8856dd6;
         // users[5] = 0xc730a3f7D9E4535c9dF88116B0155c3FA0Ff8Ef6;
